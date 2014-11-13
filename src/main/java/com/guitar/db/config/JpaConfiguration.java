@@ -39,11 +39,11 @@ public class JpaConfiguration {
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-		return new JpaTransactionManager( localContainerEntityManagerFactoryBean().getObject() );
+		return new JpaTransactionManager( entityManagerFactory().getObject() );
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean localContainerEntityManagerFactoryBean() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 		lef.setDataSource(this.dataSource);
 		lef.setJpaPropertyMap(this.jpaProperties());
