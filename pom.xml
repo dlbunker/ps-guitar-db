@@ -12,6 +12,7 @@
 	<properties>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<spring.framework.version>4.1.2.RELEASE</spring.framework.version>
+		<spring.data.jpa.version>1.7.1.RELEASE</spring.data.jpa.version>
 	</properties>
 	 
 	<dependencies>
@@ -52,6 +53,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-aop</artifactId>
 			<version>${spring.framework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data.jpa.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
