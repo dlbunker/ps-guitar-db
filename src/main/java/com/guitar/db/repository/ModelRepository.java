@@ -9,6 +9,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.guitar.db.model.Model;
@@ -17,7 +20,7 @@ import com.guitar.db.model.Model;
 public class ModelRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
-	
+
 	@Autowired
 	private ModelJpaRepository modelJpaRepository;
 
@@ -53,7 +56,7 @@ public class ModelRepository {
 	 * Custom finder
 	 */
 	public List<Model> getModelsInPriceRange(BigDecimal lowest, BigDecimal highest) {
-		
+
 		return modelJpaRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(lowest, highest);
 	}
 
@@ -61,8 +64,17 @@ public class ModelRepository {
 	 * Custom finder
 	 */
 	public List<Model> getModelsByPriceRangeAndWoodType(BigDecimal lowest, BigDecimal highest, String wood) {
-		
+
 		return modelJpaRepository.queryByPriceRangeAndWoodType(lowest, highest, "%" + wood + "%");
+	}
+
+	/**
+	 * Custom finder with pageable
+	 */
+	public Page<Model> getModelsByPriceRangeAndWoodTypePageable(BigDecimal lowest, BigDecimal highest, String wood) {
+
+		Pageable page = new PageRequest(0, 2);
+		return modelJpaRepository.queryByPriceRangeAndWoodTypeWithPagable(lowest, highest, "%" + wood + "%", page);
 	}
 
 	/**
@@ -70,9 +82,8 @@ public class ModelRepository {
 	 */
 	public List<Model> getModelsByType(String modelType) {
 		@SuppressWarnings("unchecked")
-		List<Model> mods = entityManager
-				.createNamedQuery("Model.findAllModelsByType")
-				.setParameter("name", modelType).getResultList();
+		List<Model> mods = entityManager.createNamedQuery("Model.findAllModelsByType").setParameter("name", modelType)
+				.getResultList();
 		return mods;
 	}
 

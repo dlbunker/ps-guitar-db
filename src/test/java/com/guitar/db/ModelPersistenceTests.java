@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +65,12 @@ public class ModelPersistenceTests {
 	}
 
 	@Test
+	public void testGetModelsByPriceRangeAndWoodTypeWithPage() throws Exception {
+		Page<Model> mods = modelRepository.getModelsByPriceRangeAndWoodTypePageable(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L), "Maple");
+		assertEquals(2, mods.getSize());
+	}
+	
+	@Test
 	public void testGetModelsByPriceRangeAndWoodType() throws Exception {
 		List<Model> mods = modelRepository.getModelsByPriceRangeAndWoodType(BigDecimal.valueOf(1000L), BigDecimal.valueOf(2000L), "Maple");
 		assertEquals(3, mods.size());
@@ -85,5 +92,10 @@ public class ModelPersistenceTests {
 		mods.forEach((model)->{
 			assertTrue(model.getModelType().getName().equals("Electric") || model.getModelType().getName().equals("Acustic"));
 		});
+	}
+	
+	@Test
+	public void testCustomerMethod() {
+		modelJpaRepository.CustomerMethod();
 	}
 }
